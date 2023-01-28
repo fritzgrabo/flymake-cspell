@@ -1,0 +1,46 @@
+* flymake-cspell.el
+
+A Flymake backend for [[https://cspell.org/][CSpell -- A Spell Checker for Code!]] by [[https://streetsidesoftware.com][Street
+Side Software]]. :heart:
+
+* Installation
+
+If you use MELPA, an easy way to install this package is via
+=package-install=. Alternatively, download =flymake-cspell.el=, put it in
+your =load-path= and =require= it.
+
+If you use both MELPA and =use-package=, you can use this, too:
+
+#+begin_src emacs-lisp
+(use-package flymake-cspell
+  :ensure)
+#+end_src
+
+To enable CSpell for a major mode, add =flymake-cspell-setup= to that
+mode's hook:
+
+#+begin_src emacs-lisp
+(add-hook 'python-mode-hook #'flymake-cspell-setup)
+#+end_src
+
+Or, alternatively, with =use-package=:
+
+#+begin_src emacs-lisp
+(use-package python
+  :ensure nil
+  :hook (python-mode . flymake-cspell-setup))
+#+end_src
+
+* Customization Options
+
+The =cspell= process is executed in the =default-directory= of the checked
+buffer, so will pick up the nearest cspell configuration file. CSpell
+offers a bunch of customization options (custom words per project,
+excluding files from spell checks, etc.) -- best see the [[https://cspell.org/configuration/][related section]]
+in the official docs for details.
+
+* Screenshot
+
+A Ruby buffer with various spelling errors in both code and comments.
+
+[[screenshots/screenshot.png]]
