@@ -37,6 +37,9 @@
 (eval-when-compile
   (require 'cl-lib))
 
+(defvar flymake-cspell-cspell-command "cspell"
+  "Name of the cspell command to execute.")
+
 (defvar flymake-cspell--format-diag-string
   "Unknown word: %s. Did you mean %s?"
   "Format string used to display an unknown word and its suggestions.")
@@ -128,7 +131,7 @@ excluded in cspell.")
    :name "flymake-cspell-check-buffer"
    :noquery t
    :buffer (generate-new-buffer " *flymake-cspell*")
-   :command `("cspell" "lint" "--no-progress" "--no-color" "--show-suggestions" "--language-id" ,(or flymake-cspell--cspell-language-id "auto") ,input)
+   :command `(,flymake-cspell-cspell-command "lint" "--no-progress" "--no-color" "--show-suggestions" "--language-id" ,(or flymake-cspell--cspell-language-id "auto") ,input)
    :connection-type 'pipe
    :sentinel
    (lambda (proc _event)
@@ -185,7 +188,7 @@ excluded in cspell.")
   "Enable the spell checker for the current buffer."
   (interactive)
 
-  (unless (executable-find "cspell")
+  (unless (executable-find flymake-cspell-cspell-command)
     (error "Cannot find cspell executable"))
 
   (unless (memq 'flymake-cspell--check flymake-diagnostic-functions)
