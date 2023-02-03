@@ -40,6 +40,10 @@
 (defvar flymake-cspell-cspell-command "cspell"
   "Name of the cspell command to execute.")
 
+(defvar flymake-cspell--cspell-version nil
+  "Version of cspell found on the system.
+Retrieved and cached when flymake-cspell is first set up for a buffer.")
+
 (defvar flymake-cspell--format-diag-string
   "Unknown word: %s. Did you mean %s?"
   "Format string used to display an unknown word and its suggestions.")
@@ -183,6 +187,13 @@ excluded in cspell.")
               errors)))
     (nreverse errors)))
 
+(defun flymake-cspell--cspell-version ()
+  "Retrieve (cached) version of `cspell`."
+  (or flymake-cspell--cspell-version
+      (let* ((command (format "%s --version" flymake-cspell-cspell-command))
+             (version (string-trim (shell-command-to-string command))))
+        (setq flymake-cspell--cspell-version version))))
+
 ;;;###autoload
 (defun flymake-cspell-setup ()
   "Enable the spell checker for the current buffer."
@@ -190,6 +201,11 @@ excluded in cspell.")
 
   (unless (executable-find flymake-cspell-cspell-command)
     (error "Cannot find cspell executable"))
+
+  (let ((cspell-required-version "0.0.0")
+        (cspell-version (flymake-cspell--cspell-version)))
+    (if (version< cspell-version cspell-required-version)
+        (error "Flymake-cspell requires cspell version \"%s\" or higher; found \"%s\"" cspell-required-version cspell-version)))
 
   (unless (memq 'flymake-cspell--check-buffer flymake-diagnostic-functions)
     (make-local-variable 'flymake-diagnostic-functions)
