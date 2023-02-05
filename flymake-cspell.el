@@ -131,7 +131,7 @@ excluded in cspell.")
    :name "flymake-cspell-check-buffer"
    :noquery t
    :buffer (generate-new-buffer " *flymake-cspell*")
-   :command `(,flymake-cspell-cspell-command "lint" "--no-progress" "--no-color" "--show-suggestions" "--language-id" ,(or flymake-cspell--cspell-language-id "auto") ,input)
+   :command `(,flymake-cspell-cspell-command "lint" "--no-progress" "--no-color" "--show-suggestions" "--reporter" "default" "--language-id" ,(or flymake-cspell--cspell-language-id "auto") ,input)
    :connection-type 'pipe
    :sentinel
    (lambda (proc _event)
