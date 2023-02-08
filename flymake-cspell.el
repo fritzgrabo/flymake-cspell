@@ -90,7 +90,7 @@ excluded in cspell.")
  ("typescript" typescript-ts-mode tsx-ts-mode)
  ("yaml" yaml-mode yaml-ts-mode))
 
-(defun flymake-cspell--check (report-fn &rest _args)
+(defun flymake-cspell--check-buffer (report-fn &rest _args)
   "Run cspell for current buffer; REPORT-FN is flymake's callback function."
   (when (process-live-p flymake-cspell--proc)
     (kill-process flymake-cspell--proc))
@@ -191,9 +191,9 @@ excluded in cspell.")
   (unless (executable-find flymake-cspell-cspell-command)
     (error "Cannot find cspell executable"))
 
-  (unless (memq 'flymake-cspell--check flymake-diagnostic-functions)
+  (unless (memq 'flymake-cspell--check-buffer flymake-diagnostic-functions)
     (make-local-variable 'flymake-diagnostic-functions)
-    (push 'flymake-cspell--check flymake-diagnostic-functions)))
+    (push 'flymake-cspell--check-buffer flymake-diagnostic-functions)))
 
 (provide 'flymake-cspell)
 
