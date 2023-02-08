@@ -3,6 +3,8 @@
 A Flymake backend for [[https://cspell.org/][CSpell -- A Spell Checker for Code!]] by [[https://streetsidesoftware.com][Street
 Side Software]]. :heart:
 
+Requires =cspell= version 6.21.0 or higher.
+
 * Installation
 
 If you use MELPA, an easy way to install this package is via
